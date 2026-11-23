@@ -222,7 +222,7 @@
   <div class="container">
     <header>
       <h1>🌍 Europe City Finder (Top 20 Major Cities)</h1>
-      <p>Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential"). <strong>Central & Day Trips</strong> measures access to beaches, mountains, nearby towns, and international connections. Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential").</p>
+      <p>Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential").</p>
     </header>
 
     <!-- PRIORITY SLIDERS -->
@@ -231,7 +231,7 @@
         <h2>Your Priorities</h2>
         <div class="presets">
           <button onclick="applyPreset('balanced')">⚖️ Recommended Mix</button>
-          <button onclick="applyPreset('explorer')">🧭 Basecamp & Food (Ignore Crime)</button>
+          <button onclick="applyPreset('explorer')">🧭 Basecamp & Food</button>
           <button onclick="applyPreset('chill')">🌿 Safe, Sunny & Chill</button>
           <button onclick="applyPreset('budget')">💸 Best Value / Cheap</button>
           <button id="sergio-btn" class="sergio-btn" onclick="activateSergioMode()">😎 Has Sergio Nearby</button>
@@ -539,7 +539,7 @@
       sergioMode = false;
       const presets = {
         balanced: { safety: 4, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
-        explorer: { safety: 0, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
+        explorer: { safety: 1, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
         chill:    { safety: 10, food: 8, cost: 7, weather: 8, vibe: 10, hub: 7 },
         budget:   { safety: 5, food: 8, cost: 10, weather: 7, vibe: 8, hub: 6 }
       };

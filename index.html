@@ -594,6 +594,9 @@
       document.getElementById("w-vibe-val").textContent = `${w.vibe} / 10`;
       document.getElementById("w-hub-val").textContent = `${w.hub} / 10`;
 
+      const totalWeight = w.safety + w.food + w.cost + w.weather + w.vibe + w.hub || 1;
+      const maxPts = totalWeight * 10;
+
       const filtered = selectedCountry === "All"
         ? cities
         : cities.filter(c => c.country === selectedCountry);
@@ -611,8 +614,7 @@
             c.weather * w.weather +
             c.vibe * w.vibe +
             c.hub * w.hub;
-          // 600 = 6 sliders * max weight (10) * max city score (10)
-          const match = Math.round((rawScore / 600) * 100);
+          const match = Math.round((rawScore / maxPts) * 100);
           return { ...c, rawScore, match };
         })
         .sort((a, b) => b.rawScore - a.rawScore);
@@ -642,7 +644,7 @@
           </div>
           <div class="card-footer">
             <span>Casual meal: <strong>${c.mealPrice}</strong></span>
-            <span class="match-score">${Math.round(c.rawScore)} pts (${c.match}%)</span>
+            <span class="match-score">${sergioMode ? `${c.match}% Match` : `${Math.round(c.rawScore)}/${maxPts} pts (${c.match}%)`}</span>
           </div>
         </article>
       `).join("");

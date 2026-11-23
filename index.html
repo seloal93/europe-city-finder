@@ -209,12 +209,25 @@
 
     .card-footer {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 4px;
       padding-top: 9px;
       border-top: 1px solid var(--border);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--muted);
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .footer-row span {
+      white-space: nowrap;
+    }
+    .footer-row strong {
+      color: #e2e8f0;
+      text-align: right;
     }
   </style>
 </head>
@@ -313,8 +326,6 @@
     let selectedCountry = "All";
     let sergioMode = false;
 
-    // Calibrated with 2026 Numbeo Safety/Cost indices, WMO/ERA5 sunshine hours,
-    // Time Out / TasteAtlas food rankings, InterNations vibe data & ACI/rail connectivity.
     // kmFromBcn = approximate straight-line distance from Barcelona (km)
     const cities = [
       // SPAIN (Top 5)
@@ -325,7 +336,8 @@
         kmFromBcn: 0,
         safety: 4.8, food: 9.4, cost: 6.1, weather: 8.8, vibe: 8.4, hub: 9.3,
         mealPrice: "~16€",
-        note: "Mediterranean coast, major international airport, top-5 global food scene, and easy access to the Costa Brava, Pyrenees, and high-speed rail to Madrid and southern France."
+        klTravel: "~310€ one-way · 1 stop (Qatar/Emirates/Scoot)",
+        note: "Mediterranean coast, major international airport, top-5 global food scene, and easy day trips to the Costa Brava, Girona, Tarragona's Roman ruins, and the Pyrenees."
       },
       {
         name: "Girona",
@@ -334,6 +346,7 @@
         kmFromBcn: 85,
         safety: 8.2, food: 9.0, cost: 7.0, weather: 8.0, vibe: 8.3, hub: 6.8,
         mealPrice: "~14€",
+        klTravel: "~325€ one-way · Fly BCN + 40m train w/ luggage",
         note: "Historic medieval city with high safety, Michelin-level dining, and quick access to Costa Brava beaches, though without a major international airport."
       },
       {
@@ -343,6 +356,7 @@
         kmFromBcn: 505,
         safety: 7.1, food: 9.1, cost: 6.0, weather: 8.4, vibe: 8.6, hub: 9.5,
         mealPrice: "~15€",
+        klTravel: "~320€ one-way · 1 stop (Qatar/Emirates/Turkish)",
         note: "Central high-speed rail hub with direct access to Toledo, Segovia, Seville, and Valencia, vibrant nightlife, no coastline, and hot summers."
       },
       {
@@ -352,6 +366,7 @@
         kmFromBcn: 303,
         safety: 6.5, food: 8.6, cost: 7.1, weather: 9.1, vibe: 8.5, hub: 7.4,
         mealPrice: "~13€",
+        klTravel: "~370€ one-way · 2 stops or fly MAD/BCN + train",
         note: "Flat, bike-friendly coastal city with mild winters, lower living costs than Barcelona, and classic Mediterranean cuisine, with fewer direct international flights."
       },
       {
@@ -361,6 +376,7 @@
         kmFromBcn: 830,
         safety: 6.5, food: 8.7, cost: 7.2, weather: 9.0, vibe: 8.9, hub: 6.9,
         mealPrice: "~12€",
+        klTravel: "~380€ one-way · 2 stops or fly MAD + 2.5h train",
         note: "Affordable tapas culture, warm local atmosphere, and easy access to Córdoba and Granada, paired with extreme summer heat and a smaller airport."
       },
 
@@ -372,6 +388,7 @@
         kmFromBcn: 1005,
         safety: 6.7, food: 8.9, cost: 6.7, weather: 8.9, vibe: 9.0, hub: 8.0,
         mealPrice: "~13€",
+        klTravel: "~365€ one-way · 1–2 stops (longer, fewer flights)",
         note: "Sunny coastal capital with wide English proficiency, welcoming locals, seafood culture, and nearby trips to Sintra and Cascais, though on Europe's western edge."
       },
       {
@@ -381,6 +398,7 @@
         kmFromBcn: 902,
         safety: 6.7, food: 8.6, cost: 7.3, weather: 7.8, vibe: 9.1, hub: 7.0,
         mealPrice: "~11€",
+        klTravel: "~385€ one-way · 2 stops (via Lisbon or Madrid)",
         note: "Walkable riverside city with strong local hospitality, lower costs than Lisbon, and easy access to the Douro Valley, though rainier with fewer flight routes."
       },
 
@@ -392,6 +410,7 @@
         kmFromBcn: 785,
         safety: 5.8, food: 9.3, cost: 5.1, weather: 7.8, vibe: 7.6, hub: 8.1,
         mealPrice: "~16€",
+        klTravel: "~380€ one-way · 2 stops or fly Rome/Milan + train",
         note: "Compact Renaissance city surrounded by Tuscan countryside towns (Siena, Pisa, Chianti) with direct north-south high-speed rail and heavy tourist crowds."
       },
       {
@@ -401,6 +420,7 @@
         kmFromBcn: 860,
         safety: 5.3, food: 9.3, cost: 5.7, weather: 8.4, vibe: 7.8, hub: 8.8,
         mealPrice: "~15€",
+        klTravel: "~315€ one-way · 1 stop (Qatar/Emirates/SQ)",
         note: "Major international hub with unmatched historical landmarks, sunny weather, and traditional cuisine, alongside heavy crowds and chaotic urban transit."
       },
       {
@@ -410,6 +430,7 @@
         kmFromBcn: 725,
         safety: 4.7, food: 8.8, cost: 4.7, weather: 6.6, vibe: 6.5, hub: 9.2,
         mealPrice: "~18€",
+        klTravel: "~305€ one-way · 1 stop (frequent Asian hubs)",
         note: "Fast-paced commercial and fashion hub with extensive rail links to Lake Como, the Swiss Alps, Venice, and the Ligurian coast, but pricey and foggy in winter."
       },
       {
@@ -419,6 +440,7 @@
         kmFromBcn: 1015,
         safety: 3.8, food: 9.6, cost: 6.1, weather: 8.5, vibe: 6.8, hub: 7.6,
         mealPrice: "~11€",
+        klTravel: "~370€ one-way · 2 stops or fly Rome + 1.1h train",
         note: "High-energy coastal city ranked #1 globally for traditional food and street pizza, serving as the gateway to Pompeii and the Amalfi Coast, with lower safety scores."
       },
 
@@ -430,6 +452,7 @@
         kmFromBcn: 530,
         safety: 4.1, food: 9.3, cost: 4.8, weather: 6.8, vibe: 6.8, hub: 8.5,
         mealPrice: "~18€",
+        klTravel: "~370€ one-way · 1–2 stops or fly Paris + 2h TGV",
         note: "France's gastronomic center with direct high-speed rail access to Paris, Geneva, the French Alps, and Provence, though colder and landlocked."
       },
       {
@@ -439,6 +462,7 @@
         kmFromBcn: 490,
         safety: 4.4, food: 8.5, cost: 4.7, weather: 8.7, vibe: 6.7, hub: 8.2,
         mealPrice: "~19€",
+        klTravel: "~375€ one-way · 1–2 stops (Emirates/Qatar)",
         note: "French Riviera coastal city with mild winters, turquoise waters, and immediate rail access to Monaco and northern Italy, at higher daily costs."
       },
       {
@@ -448,6 +472,7 @@
         kmFromBcn: 830,
         safety: 4.2, food: 9.4, cost: 4.1, weather: 5.4, vibe: 5.6, hub: 9.8,
         mealPrice: "~20€",
+        klTravel: "~340€ one-way · Direct (MH) or 1 fast stop",
         note: "Global cultural capital with Europe's densest rail and flight network and world-class dining, paired with high living costs, grey skies, and an intense pace."
       },
 
@@ -459,6 +484,7 @@
         kmFromBcn: 1055,
         safety: 7.9, food: 7.3, cost: 4.4, weather: 5.6, vibe: 6.8, hub: 9.0,
         mealPrice: "~18€",
+        klTravel: "~340€ one-way · 1 stop (SQ/Qatar/Emirates)",
         note: "Clean, very safe city with strong public infrastructure and easy trips to the Bavarian and Austrian Alps, Salzburg, and northern Italy, with long winters."
       },
       {
@@ -468,6 +494,7 @@
         kmFromBcn: 1500,
         safety: 5.6, food: 8.1, cost: 5.0, weather: 5.2, vibe: 7.0, hub: 8.4,
         mealPrice: "~15€",
+        klTravel: "~345€ one-way · 1 stop (Qatar/Turkish) or 2",
         note: "Large, international creative hub with diverse global cuisine and moderate costs, paired with blunt local directness and cold, grey winters."
       },
       {
@@ -477,6 +504,7 @@
         kmFromBcn: 1475,
         safety: 6.0, food: 7.4, cost: 4.8, weather: 4.6, vibe: 6.7, hub: 7.4,
         mealPrice: "~16€",
+        klTravel: "~365€ one-way · 1–2 stops (fewer Asian links)",
         note: "Maritime port city with extensive canals, strong music and cultural life, reserved northern demeanor, and cool, rainy weather."
       },
 
@@ -488,6 +516,7 @@
         kmFromBcn: 855,
         safety: 7.7, food: 6.9, cost: 1.5, weather: 5.3, vibe: 5.9, hub: 9.1,
         mealPrice: "~32€",
+        klTravel: "~360€ one-way · 1 stop (SQ/Swiss/Qatar)",
         note: "Ultra-safe lakeside city with punctual rail connections to the Swiss Alps, Germany, Austria, and Italy, alongside the highest daily living costs in Europe."
       },
       {
@@ -497,6 +526,7 @@
         kmFromBcn: 625,
         safety: 7.1, food: 7.1, cost: 1.6, weather: 5.7, vibe: 6.0, hub: 8.6,
         mealPrice: "~30€",
+        klTravel: "~370€ one-way · 1 stop (Qatar/Emirates/Etihad)",
         note: "International diplomatic hub on Lake Geneva surrounded by French alpine towns and ski resorts, with steep daily expenses."
       },
       {
@@ -506,6 +536,7 @@
         kmFromBcn: 760,
         safety: 7.4, food: 6.6, cost: 1.9, weather: 5.3, vibe: 6.5, hub: 7.9,
         mealPrice: "~28€",
+        klTravel: "~380€ one-way · Fly Zurich/Geneva + 1.2h train",
         note: "Relaxed medieval capital with direct rail links to Interlaken and the Jungfrau region, high safety, high prices, and no major international airport."
       }
     ];
@@ -639,7 +670,14 @@
             </div>
           </div>
           <div class="card-footer">
-            <span>Casual meal: <strong>${c.mealPrice}</strong></span>
+            <div class="footer-row">
+              <span>🍽️ Casual meal:</span>
+              <strong>${c.mealPrice}</strong>
+            </div>
+            <div class="footer-row">
+              <span>✈️ From KL:</span>
+              <strong>${c.klTravel}</strong>
+            </div>
           </div>
         </article>
       `).join("");

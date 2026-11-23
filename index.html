@@ -577,47 +577,18 @@
       };
 
       document.getElementById("w-safety-val").textContent = `${w.safety} / 10`;
-      document.getElementById("w-food-val").textContent = `${w.food} / 10`;
-      document.getElementById("w-cost-val").textContent = `${w.cost} / 10`;
-      document.getElementById("w-weather-val").textContent = `${w.weather} / 10`;
-      document.getElementById("w-vibe-val").textContent = `${w.vibe} / 10`;
-      document.getElementById("w-hub-val").textContent = `${w.hub} / 10`;
-
-      const totalWeight = w.safety + w.food + w.cost + w.weather + w.vibe + w.hub || 1;
-
-      const filtered = selectedCountry === "All"
-        ? cities
-        : cities.filter(c => c.country === selectedCountry);
-
-      const ranked = filtered
-        .map(c => {
-          if (sergioMode) {
-            const sergioScore = Math.max(0, Math.round(100 - (c.kmFromBcn / 17)));
-            return { ...c, match: sergioScore };
-          }
-          const weightedSum =
-            c.safety * w.safety +
-            c.food * w.food +
-            c.cost * w.cost +
-            c.weather * w.weather +
-            c.vibe * w.vibe +
-            c.hub * w.hub;
-          const match = Math.round((weightedSum / (totalWeight * 10)) * 100);
-          return { ...c, match };
-        })
-        .sort((a, b) => sergioMode ? a.kmFromBcn - b.kmFromBcn : b.match - a.match);
-
-      document.getElementById("count-label").textContent = sergioMode
-        ? `Showing ${ranked.length} cities sorted by distance to Sergio (Barcelona)`
+      document.getElementById("w-food-val").textContent = `${w.food} / 10`; document.getElementById("w-cost-val").textContent = `${w.cost} / 10`;
+      document.getElementById("w-weather-val").textContent = `${w.weather} / 10`; document.getElementById("w-vibe-val").textContent = `${w.vibe} / 10`;
+      document.getElementById("w-hub-val").textContent = `${w.hub} / 10`;  const filtered = selectedCountry === "All" ? cities : cities.filter(c => c.country === selectedCountry);  const ranked = filtered .map(c => { if (sergioMode) { const sergioScore = Math.max(0, Math.round(100 - (c.kmFromBcn / 17))); return { ...c, rawScore: -c.kmFromBcn, match: sergioScore }; } const rawScore = c.safety * w.safety + c.food * w.food + c.cost * w.cost + c.weather * w.weather + c.vibe * w.vibe + c.hub * w.hub; // 600 = 6 sliders * max weight (10) * max city score (10) const match = Math.round((rawScore / 600) * 100); return { ...c, rawScore, match }; }) .sort((a, b) => b.rawScore - a.rawScore);  document.getElementById("count-label").textContent = sergioMode ? `Showing ${ranked.length} cities sorted by distance to Sergio (Barcelona)`
         : `Showing ${ranked.length} cities ranked by your sliders`;
 
       const grid = document.getElementById("cities-grid");
       grid.innerHTML = ranked.map((c, idx) => `
         <article class="city-card ${idx === 0 ? "top-pick" : ""}">
           <div>
-            <span class="rank-badge">#${idx + 1} · ${c.match}%</span>
-            <div class="city-title">${c.flag} ${c.name}</div>
-            <div class="city-country">${c.country} ${sergioMode ? `· ${c.kmFromBcn === 0 ? "0 km (Sergio is here!)" : c.kmFromBcn + " km from Barcelona"}` : ""}</div>
+            <span class="rank-badge">#${idx + 1} ·${c.match}%</span>
+            <div class="city-title">${c.flag}${c.name}</div>
+            <div class="city-country">${c.country}${sergioMode ? `· ${c.kmFromBcn === 0 ? "0 km (Sergio is here!)" : c.kmFromBcn + " km from Barcelona"}` : ""}</div>
             <div class="city-note">${c.note}</div>
 
             <div class="metrics">
@@ -632,7 +603,7 @@
           </div>
           <div class="card-footer">
             <span>Casual meal: <strong>${c.mealPrice}</strong></span>
-            <span class="match-score">${c.match}% Match</span>
+            <span class="match-score">${Math.round(c.rawScore)} pts (${c.match}%)</span>
           </div>
         </article>
       `).join("");
@@ -642,17 +613,3 @@
       return `
         <div class="metric-row" style="opacity: ${ignored ? 0.35 : 1}">
           <div class="metric-label">
-            <span>${label} ${ignored ? "(ignored)" : ""}</span>
-            <strong>${value.toFixed(1)}/10</strong>
-          </div>
-          <div class="bar-bg">
-            <div class="bar-fill" style="width: ${value * 10}%; background: ${getBarColor(value)};"></div>
-          </div>
-        </div>
-      `;
-    }
-
-    render();
-  </script>
-</body>
-</html>

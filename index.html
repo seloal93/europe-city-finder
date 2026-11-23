@@ -259,18 +259,18 @@
         <div class="slider-box">
           <div class="slider-top">
             <span>📍 Central & Day Trips</span>
-            <span class="weight-badge" id="w-hub-val">10 / 10</span>
+            <span class="weight-badge" id="w-hub-val">9 / 10</span>
           </div>
-          <input type="range" id="w-hub" min="0" max="10" value="10" oninput="manualSlide()" />
+          <input type="range" id="w-hub" min="0" max="10" value="9" oninput="manualSlide()" />
           <div class="slider-hint">Beaches, towns, mountains & flights nearby</div>
         </div>
 
         <div class="slider-box">
           <div class="slider-top">
             <span>🍽️ Great Food</span>
-            <span class="weight-badge" id="w-food-val">10 / 10</span>
+            <span class="weight-badge" id="w-food-val">9 / 10</span>
           </div>
-          <input type="range" id="w-food" min="0" max="10" value="10" oninput="manualSlide()" />
+          <input type="range" id="w-food" min="0" max="10" value="9" oninput="manualSlide()" />
           <div class="slider-hint">Local gastronomy & street life</div>
         </div>
 
@@ -295,18 +295,18 @@
         <div class="slider-box">
           <div class="slider-top">
             <span>💰 Cheap Living</span>
-            <span class="weight-badge" id="w-cost-val">6 / 10</span>
+            <span class="weight-badge" id="w-cost-val">7 / 10</span>
           </div>
-          <input type="range" id="w-cost" min="0" max="10" value="6" oninput="manualSlide()" />
+          <input type="range" id="w-cost" min="0" max="10" value="7" oninput="manualSlide()" />
           <div class="slider-hint">10 = Very affordable daily costs</div>
         </div>
 
         <div class="slider-box">
           <div class="slider-top">
             <span>🛡️ Low Crime</span>
-            <span class="weight-badge" id="w-safety-val">4 / 10</span>
+            <span class="weight-badge" id="w-safety-val">5 / 10</span>
           </div>
-          <input type="range" id="w-safety" min="0" max="10" value="4" oninput="manualSlide()" />
+          <input type="range" id="w-safety" min="0" max="10" value="5" oninput="manualSlide()" />
           <div class="slider-hint">0 = Pickpockets don't scare me</div>
         </div>
       </div>
@@ -337,7 +337,7 @@
         safety: 4.8, food: 9.4, cost: 6.1, weather: 8.8, vibe: 8.4, hub: 9.3,
         mealPrice: "~16€",
         klTravel: "~310€ one-way · 1 stop (Qatar/Emirates/Scoot)",
-        note: "Mediterranean coast, major international airport, top-5 global food scene, and easy day trips to the Costa Brava, Girona, Tarragona, and the Pyrenees."
+        note: "Mediterranean coast, major international airport, top-5 global food scene, and easy day trips to the Costa Brava, Girona, Tarragona's Roman ruins, and the Pyrenees."
       },
       {
         name: "Girona",
@@ -346,7 +346,7 @@
         kmFromBcn: 85,
         safety: 8.2, food: 9.0, cost: 7.0, weather: 8.0, vibe: 8.3, hub: 6.8,
         mealPrice: "~14€",
-        klTravel: "~325€ one-way · Fly BCN + 40m train",
+        klTravel: "~325€ one-way · Fly BCN + 40m train w/ luggage",
         note: "Historic medieval city with high safety, Michelin-level dining, and quick access to Costa Brava beaches, though without a major international airport."
       },
       {
@@ -570,10 +570,10 @@
     function applyPreset(type) {
       sergioMode = false;
       const presets = {
-        balanced: { safety: 4, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
-        explorer: { safety: 1, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
-        chill:    { safety: 10, food: 8, cost: 7, weather: 8, vibe: 10, hub: 7 },
-        budget:   { safety: 5, food: 8, cost: 10, weather: 7, vibe: 8, hub: 6 }
+        balanced: { safety: 5, food: 9,  cost: 7,  weather: 9, vibe: 8,  hub: 9  },
+        explorer: { safety: 2, food: 10, cost: 5,  weather: 6, vibe: 6,  hub: 10 },
+        chill:    { safety: 9, food: 8,  cost: 7,  weather: 8, vibe: 10, hub: 7  },
+        budget:   { safety: 5, food: 8,  cost: 10, weather: 7, vibe: 8,  hub: 6  }
       };
       const p = presets[type];
       document.getElementById("w-safety").value = p.safety;

@@ -68,6 +68,27 @@
       color: var(--accent);
       background: rgba(56, 189, 248, 0.1);
     }
+    button.sergio-btn {
+      border-color: #a855f7;
+      color: #e9d5ff;
+    }
+    button.sergio-btn:hover, button.sergio-btn.active {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #c084fc;
+      color: #fff;
+    }
+
+    .sergio-banner {
+      display: none;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid #a855f7;
+      color: #f3e8ff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+    .sergio-banner.visible { display: block; }
 
     .sliders {
       display: grid;
@@ -207,7 +228,12 @@
           <button onclick="applyPreset('explorer')">🧭 Basecamp & Food (Ignore Crime)</button>
           <button onclick="applyPreset('chill')">🌿 Safe, Sunny & Chill</button>
           <button onclick="applyPreset('budget')">💸 Best Value / Cheap</button>
+          <button id="sergio-btn" class="sergio-btn" onclick="activateSergioMode()">😎 Has Sergio Nearby</button>
         </div>
+      </div>
+
+      <div id="sergio-banner" class="sergio-banner">
+        <strong>😎 Sergio Mode Activated:</strong> All logical metrics ignored! Cities are now ranked strictly by how close they are to Barcelona so we can actually hang out.
       </div>
 
       <div class="sliders">
@@ -216,7 +242,7 @@
             <span>📍 Central & Day Trips</span>
             <span class="weight-badge" id="w-hub-val">10 / 10</span>
           </div>
-          <input type="range" id="w-hub" min="0" max="10" value="10" oninput="render()" />
+          <input type="range" id="w-hub" min="0" max="10" value="10" oninput="manualSlide()" />
           <div class="slider-hint">Beaches, towns, mountains & flights nearby</div>
         </div>
 
@@ -225,7 +251,7 @@
             <span>🍽️ Great Food</span>
             <span class="weight-badge" id="w-food-val">10 / 10</span>
           </div>
-          <input type="range" id="w-food" min="0" max="10" value="10" oninput="render()" />
+          <input type="range" id="w-food" min="0" max="10" value="10" oninput="manualSlide()" />
           <div class="slider-hint">Local gastronomy & street life</div>
         </div>
 
@@ -234,7 +260,7 @@
             <span>☀️ Good Weather</span>
             <span class="weight-badge" id="w-weather-val">9 / 10</span>
           </div>
-          <input type="range" id="w-weather" min="0" max="10" value="9" oninput="render()" />
+          <input type="range" id="w-weather" min="0" max="10" value="9" oninput="manualSlide()" />
           <div class="slider-hint">Sun & warmth vs. grey winters</div>
         </div>
 
@@ -243,7 +269,7 @@
             <span>🤝 Good People</span>
             <span class="weight-badge" id="w-vibe-val">8 / 10</span>
           </div>
-          <input type="range" id="w-vibe" min="0" max="10" value="8" oninput="render()" />
+          <input type="range" id="w-vibe" min="0" max="10" value="8" oninput="manualSlide()" />
           <div class="slider-hint">Warmth, openness & chill vibe</div>
         </div>
 
@@ -252,7 +278,7 @@
             <span>💰 Cheap Living</span>
             <span class="weight-badge" id="w-cost-val">6 / 10</span>
           </div>
-          <input type="range" id="w-cost" min="0" max="10" value="6" oninput="render()" />
+          <input type="range" id="w-cost" min="0" max="10" value="6" oninput="manualSlide()" />
           <div class="slider-hint">10 = Very affordable daily costs</div>
         </div>
 
@@ -261,7 +287,7 @@
             <span>🛡️ Low Crime</span>
             <span class="weight-badge" id="w-safety-val">4 / 10</span>
           </div>
-          <input type="range" id="w-safety" min="0" max="10" value="4" oninput="render()" />
+          <input type="range" id="w-safety" min="0" max="10" value="4" oninput="manualSlide()" />
           <div class="slider-hint">0 = Pickpockets don't scare me</div>
         </div>
       </div>
@@ -279,13 +305,16 @@
 
   <script>
     let selectedCountry = "All";
+    let sergioMode = false;
 
+    // kmFromBcn = approximate straight-line distance from Barcelona (km)
     const cities = [
       // SPAIN (Top 5)
       {
         name: "Barcelona",
         country: "Spain",
         flag: "🇪🇸",
+        kmFromBcn: 0,
         safety: 4.5, food: 9.5, cost: 6.1, weather: 9.3, vibe: 8.3, hub: 10.0,
         mealPrice: "~16€",
         note: "Mediterranean coast, major international airport, strong gastronomy, and easy day trips to Girona, Tarragona, Sitges, Montserrat, and the Pyrenees — high pickpocket rates in tourist areas."
@@ -294,6 +323,7 @@
         name: "Girona",
         country: "Spain",
         flag: "🇪🇸",
+        kmFromBcn: 85,
         safety: 9.2, food: 9.1, cost: 7.4, weather: 8.3, vibe: 8.8, hub: 8.2,
         mealPrice: "~14€",
         note: "Historic medieval city with high safety, acclaimed dining, and proximity to Costa Brava beaches and Barcelona, though with a smaller transit network."
@@ -302,6 +332,7 @@
         name: "Madrid",
         country: "Spain",
         flag: "🇪🇸",
+        kmFromBcn: 505,
         safety: 7.2, food: 9.2, cost: 6.3, weather: 8.0, vibe: 8.7, hub: 9.5,
         mealPrice: "~15€",
         note: "Central high-speed rail hub with direct access to Toledo, Segovia, Seville, and Valencia, vibrant nightlife, no coastline, and hot summers."
@@ -310,6 +341,7 @@
         name: "Valencia",
         country: "Spain",
         flag: "🇪🇸",
+        kmFromBcn: 303,
         safety: 7.9, food: 9.0, cost: 7.3, weather: 9.2, vibe: 8.6, hub: 8.1,
         mealPrice: "~13€",
         note: "Flat, bike-friendly coastal city with mild winters, lower living costs than Barcelona, and classic Mediterranean cuisine."
@@ -318,6 +350,7 @@
         name: "Seville",
         country: "Spain",
         flag: "🇪🇸",
+        kmFromBcn: 830,
         safety: 7.5, food: 9.1, cost: 7.8, weather: 8.6, vibe: 9.1, hub: 8.2,
         mealPrice: "~12€",
         note: "Affordable tapas culture, warm local atmosphere, and easy access to Córdoba, Granada, and southern Portugal, with extreme summer heat."
@@ -328,6 +361,7 @@
         name: "Lisbon",
         country: "Portugal",
         flag: "🇵🇹",
+        kmFromBcn: 1005,
         safety: 8.4, food: 8.9, cost: 7.1, weather: 9.0, vibe: 9.3, hub: 8.8,
         mealPrice: "~13€",
         note: "Sunny coastal capital with wide English proficiency, welcoming locals, seafood culture, and nearby trips to Sintra and Cascais beaches."
@@ -336,6 +370,7 @@
         name: "Porto",
         country: "Portugal",
         flag: "🇵🇹",
+        kmFromBcn: 902,
         safety: 8.8, food: 8.8, cost: 7.9, weather: 7.8, vibe: 9.4, hub: 8.0,
         mealPrice: "~11€",
         note: "Walkable riverside city with strong local hospitality, lower costs than Lisbon, and easy access to the Douro Valley and Atlantic beaches."
@@ -344,6 +379,7 @@
         name: "Faro (Algarve)",
         country: "Portugal",
         flag: "🇵🇹",
+        kmFromBcn: 985,
         safety: 9.0, food: 8.3, cost: 7.6, weather: 9.4, vibe: 8.9, hub: 7.4,
         mealPrice: "~12€",
         note: "Over 300 sunny days per year, dramatic Atlantic cliffs and beaches, relaxed pace, and straightforward road access to Seville."
@@ -352,6 +388,7 @@
         name: "Coimbra",
         country: "Portugal",
         flag: "🇵🇹",
+        kmFromBcn: 910,
         safety: 9.1, food: 8.4, cost: 8.4, weather: 8.2, vibe: 9.0, hub: 7.9,
         mealPrice: "~10€",
         note: "Historic university city positioned midway between Lisbon and Porto, offering low daily costs and a traditional lifestyle."
@@ -360,6 +397,7 @@
         name: "Braga",
         country: "Portugal",
         flag: "🇵🇹",
+        kmFromBcn: 870,
         safety: 9.3, food: 8.5, cost: 8.3, weather: 7.7, vibe: 9.1, hub: 7.8,
         mealPrice: "~10€",
         note: "Safe, youthful northern city near Porto, Peneda-Gerês National Park, and the Spanish region of Galicia."
@@ -370,6 +408,7 @@
         name: "Bologna",
         country: "Italy",
         flag: "🇮🇹",
+        kmFromBcn: 805,
         safety: 7.6, food: 9.7, cost: 6.8, weather: 7.7, vibe: 8.5, hub: 9.5,
         mealPrice: "~15€",
         note: "Renowned culinary capital and major rail crossroads with fast connections to Florence, Milan, Venice, and Rome."
@@ -378,6 +417,7 @@
         name: "Florence",
         country: "Italy",
         flag: "🇮🇹",
+        kmFromBcn: 785,
         safety: 7.4, food: 9.4, cost: 6.1, weather: 8.2, vibe: 8.0, hub: 9.1,
         mealPrice: "~16€",
         note: "Compact Renaissance city surrounded by Tuscan countryside towns (Siena, Pisa, Chianti) with direct north-south high-speed rail."
@@ -386,6 +426,7 @@
         name: "Rome",
         country: "Italy",
         flag: "🇮🇹",
+        kmFromBcn: 860,
         safety: 5.2, food: 9.5, cost: 6.2, weather: 8.8, vibe: 8.2, hub: 8.9,
         mealPrice: "~15€",
         note: "Major international hub with unmatched historical landmarks, sunny weather, and traditional cuisine, alongside heavy crowds and transit pickpockets."
@@ -394,6 +435,7 @@
         name: "Milan",
         country: "Italy",
         flag: "🇮🇹",
+        kmFromBcn: 725,
         safety: 6.1, food: 8.7, cost: 5.0, weather: 7.1, vibe: 7.0, hub: 9.5,
         mealPrice: "~18€",
         note: "Commercial and fashion hub with extensive rail links to Lake Como, the Swiss Alps, Venice, and the Ligurian coast."
@@ -402,6 +444,7 @@
         name: "Naples",
         country: "Italy",
         flag: "🇮🇹",
+        kmFromBcn: 1015,
         safety: 4.3, food: 9.7, cost: 7.9, weather: 9.0, vibe: 8.9, hub: 8.8,
         mealPrice: "~11€",
         note: "Affordable, high-energy coastal city famous for pizza and street food, serving as the gateway to Pompeii, Capri, and the Amalfi Coast."
@@ -412,6 +455,7 @@
         name: "Lyon",
         country: "France",
         flag: "🇫🇷",
+        kmFromBcn: 530,
         safety: 6.8, food: 9.5, cost: 5.8, weather: 7.2, vibe: 7.4, hub: 9.2,
         mealPrice: "~18€",
         note: "France's gastronomic center with direct high-speed rail access to Paris, Geneva, the French Alps, and Provence."
@@ -420,6 +464,7 @@
         name: "Nice",
         country: "France",
         flag: "🇫🇷",
+        kmFromBcn: 490,
         safety: 6.7, food: 8.6, cost: 5.2, weather: 9.0, vibe: 7.3, hub: 8.9,
         mealPrice: "~19€",
         note: "French Riviera coastal city with mild winters, turquoise waters, and immediate rail access to Monaco and northern Italy."
@@ -428,6 +473,7 @@
         name: "Paris",
         country: "France",
         flag: "🇫🇷",
+        kmFromBcn: 830,
         safety: 5.0, food: 9.3, cost: 4.1, weather: 5.8, vibe: 6.0, hub: 9.6,
         mealPrice: "~20€",
         note: "Global cultural capital with Europe's densest rail and flight network, world-class dining, high living costs, and busy urban pace."
@@ -436,6 +482,7 @@
         name: "Bordeaux",
         country: "France",
         flag: "🇫🇷",
+        kmFromBcn: 445,
         safety: 6.6, food: 8.9, cost: 6.0, weather: 7.6, vibe: 7.5, hub: 8.0,
         mealPrice: "~17€",
         note: "Elegant wine capital close to Atlantic beaches and Arcachon Bay, connected to Paris via high-speed rail."
@@ -444,6 +491,7 @@
         name: "Annecy",
         country: "France",
         flag: "🇫🇷",
+        kmFromBcn: 585,
         safety: 9.0, food: 8.5, cost: 5.4, weather: 6.6, vibe: 8.0, hub: 8.3,
         mealPrice: "~19€",
         note: "Alpine lake town offering high safety, outdoor sports, and proximity to Geneva and French mountain resorts."
@@ -454,6 +502,7 @@
         name: "Munich",
         country: "Germany",
         flag: "🇩🇪",
+        kmFromBcn: 1055,
         safety: 8.8, food: 7.4, cost: 4.6, weather: 5.3, vibe: 7.2, hub: 9.2,
         mealPrice: "~18€",
         note: "Clean, safe city with strong public infrastructure and easy trips to the Bavarian and Austrian Alps, Salzburg, and northern Italy."
@@ -462,6 +511,7 @@
         name: "Berlin",
         country: "Germany",
         flag: "🇩🇪",
+        kmFromBcn: 1500,
         safety: 6.3, food: 8.1, cost: 6.4, weather: 4.7, vibe: 7.3, hub: 8.4,
         mealPrice: "~14€",
         note: "Large, international creative hub with diverse global cuisine and moderate prices for Western Europe, paired with cold, grey winters."
@@ -470,6 +520,7 @@
         name: "Frankfurt",
         country: "Germany",
         flag: "🇩🇪",
+        kmFromBcn: 1095,
         safety: 6.2, food: 7.2, cost: 5.3, weather: 5.4, vibe: 6.6, hub: 9.5,
         mealPrice: "~16€",
         note: "Major European aviation and rail hub with quick access to the Rhine Valley, Heidelberg, France, and the Benelux countries."
@@ -478,6 +529,7 @@
         name: "Hamburg",
         country: "Germany",
         flag: "🇩🇪",
+        kmFromBcn: 1475,
         safety: 7.1, food: 7.6, cost: 5.6, weather: 4.3, vibe: 7.1, hub: 7.5,
         mealPrice: "~16€",
         note: "Maritime port city with extensive canals, strong music and cultural life, and cool, rainy northern weather."
@@ -486,6 +538,7 @@
         name: "Freiburg",
         country: "Germany",
         flag: "🇩🇪",
+        kmFromBcn: 840,
         safety: 8.9, food: 7.5, cost: 6.0, weather: 6.5, vibe: 8.1, hub: 8.8,
         mealPrice: "~15€",
         note: "Germany's sunniest university city at the edge of the Black Forest, right on the border with France (Alsace) and Switzerland."
@@ -496,6 +549,7 @@
         name: "London",
         country: "United Kingdom",
         flag: "🇬🇧",
+        kmFromBcn: 1138,
         safety: 6.0, food: 8.4, cost: 3.1, weather: 3.6, vibe: 6.8, hub: 9.5,
         mealPrice: "~22€",
         note: "Global metropolis with extensive international flights, diverse world cuisine, high living costs, and overcast weather."
@@ -504,6 +558,7 @@
         name: "Edinburgh",
         country: "United Kingdom",
         flag: "🇬🇧",
+        kmFromBcn: 1665,
         safety: 8.0, food: 7.5, cost: 5.1, weather: 3.4, vibe: 8.5, hub: 7.6,
         mealPrice: "~18€",
         note: "Historic stone architecture, welcoming local culture, and gateway to the Scottish Highlands, with cool and windy weather year-round."
@@ -512,6 +567,7 @@
         name: "Manchester",
         country: "United Kingdom",
         flag: "🇬🇧",
+        kmFromBcn: 1395,
         safety: 5.8, food: 7.6, cost: 5.6, weather: 3.5, vibe: 8.2, hub: 8.1,
         mealPrice: "~16€",
         note: "Lively northern city known for music, sports, friendly locals, and proximity to the Peak District and Lake District."
@@ -520,6 +576,7 @@
         name: "Bristol",
         country: "United Kingdom",
         flag: "🇬🇧",
+        kmFromBcn: 1185,
         safety: 6.9, food: 7.7, cost: 5.0, weather: 4.3, vibe: 8.3, hub: 8.2,
         mealPrice: "~17€",
         note: "Harbor city with an independent food and arts scene, close to Bath, Wales, and the Cotswolds."
@@ -528,6 +585,7 @@
         name: "Bath",
         country: "United Kingdom",
         flag: "🇬🇧",
+        kmFromBcn: 1170,
         safety: 8.5, food: 7.4, cost: 4.8, weather: 4.4, vibe: 8.2, hub: 7.9,
         mealPrice: "~18€",
         note: "Well-preserved Georgian architecture and Roman baths, high safety, and easy rail access to Bristol and London."
@@ -538,6 +596,7 @@
         name: "Zurich",
         country: "Switzerland",
         flag: "🇨🇭",
+        kmFromBcn: 855,
         safety: 9.6, food: 6.8, cost: 1.8, weather: 4.9, vibe: 6.3, hub: 9.3,
         mealPrice: "~32€",
         note: "Ultra-safe lakeside city with punctual rail connections to the Swiss Alps, Germany, Austria, and Italy, at very high living costs."
@@ -546,6 +605,7 @@
         name: "Geneva",
         country: "Switzerland",
         flag: "🇨🇭",
+        kmFromBcn: 625,
         safety: 8.9, food: 7.2, cost: 1.9, weather: 5.4, vibe: 6.4, hub: 9.0,
         mealPrice: "~30€",
         note: "International diplomatic hub on Lake Geneva surrounded by French alpine towns and ski resorts, with high daily expenses."
@@ -554,6 +614,7 @@
         name: "Lucerne",
         country: "Switzerland",
         flag: "🇨🇭",
+        kmFromBcn: 820,
         safety: 9.7, food: 6.6, cost: 2.1, weather: 4.8, vibe: 7.2, hub: 8.8,
         mealPrice: "~29€",
         note: "Scenic lakefront city in central Switzerland surrounded by Mount Pilatus and Rigi, offering high safety and steep prices."
@@ -562,6 +623,7 @@
         name: "Bern",
         country: "Switzerland",
         flag: "🇨🇭",
+        kmFromBcn: 760,
         safety: 9.6, food: 6.5, cost: 2.3, weather: 4.9, vibe: 7.3, hub: 8.9,
         mealPrice: "~28€",
         note: "Relaxed medieval capital with direct rail links to Interlaken and the Jungfrau region."
@@ -570,6 +632,7 @@
         name: "Lugano",
         country: "Switzerland",
         flag: "🇨🇭",
+        kmFromBcn: 745,
         safety: 9.5, food: 8.1, cost: 2.4, weather: 7.4, vibe: 7.7, hub: 8.8,
         mealPrice: "~27€",
         note: "Italian-speaking lakeside city combining Mediterranean climate and cuisine with Swiss safety and direct rail to Milan."
@@ -585,7 +648,25 @@
       return "var(--bad)";
     }
 
+    function manualSlide() {
+      sergioMode = false;
+      render();
+    }
+
+    function activateSergioMode() {
+      sergioMode = true;
+      selectedCountry = "All";
+      document.getElementById("w-safety").value = 0;
+      document.getElementById("w-food").value = 0;
+      document.getElementById("w-cost").value = 0;
+      document.getElementById("w-weather").value = 0;
+      document.getElementById("w-vibe").value = 0;
+      document.getElementById("w-hub").value = 0;
+      render();
+    }
+
     function applyPreset(type) {
+      sergioMode = false;
       const presets = {
         balanced: { safety: 4, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
         explorer: { safety: 0, food: 10, cost: 6, weather: 9, vibe: 8, hub: 10 },
@@ -619,6 +700,9 @@
     function render() {
       renderFilters();
 
+      document.getElementById("sergio-btn").classList.toggle("active", sergioMode);
+      document.getElementById("sergio-banner").classList.toggle("visible", sergioMode);
+
       const w = {
         safety: +document.getElementById("w-safety").value,
         food: +document.getElementById("w-food").value,
@@ -643,6 +727,10 @@
 
       const ranked = filtered
         .map(c => {
+          if (sergioMode) {
+            const sergioScore = Math.max(0, Math.round(100 - (c.kmFromBcn / 17)));
+            return { ...c, match: sergioScore };
+          }
           const weightedSum =
             c.safety * w.safety +
             c.food * w.food +
@@ -653,9 +741,11 @@
           const match = Math.round((weightedSum / (totalWeight * 10)) * 100);
           return { ...c, match };
         })
-        .sort((a, b) => b.match - a.match);
+        .sort((a, b) => sergioMode ? a.kmFromBcn - b.kmFromBcn : b.match - a.match);
 
-      document.getElementById("count-label").textContent = `Showing ${ranked.length} cities ranked by your sliders`;
+      document.getElementById("count-label").textContent = sergioMode
+        ? `Showing ${ranked.length} cities sorted by distance to Sergio (Barcelona)`
+        : `Showing ${ranked.length} cities ranked by your sliders`;
 
       const grid = document.getElementById("cities-grid");
       grid.innerHTML = ranked.map((c, idx) => `
@@ -663,16 +753,17 @@
           <div>
             <span class="rank-badge">#${idx + 1} · ${c.match}%</span>
             <div class="city-title">${c.flag} ${c.name}</div>
-            <div class="city-country">${c.country}</div>
+            <div class="city-country">${c.country} ${sergioMode ? `· ${c.kmFromBcn === 0 ? "0 km (Sergio is here!)" : c.kmFromBcn + " km from Barcelona"}` : ""}</div>
             <div class="city-note">${c.note}</div>
 
             <div class="metrics">
-              ${renderBar("📍 Central & Day Trips", c.hub, w.hub === 0)}
-              ${renderBar("🍽️ Great Food", c.food, w.food === 0)}
-              ${renderBar("☀️ Good Weather", c.weather, w.weather === 0)}
-              ${renderBar("🤝 Good People / Vibe", c.vibe, w.vibe === 0)}
-              ${renderBar("💰 Cheap Living", c.cost, w.cost === 0)}
-              ${renderBar("🛡️ Low Crime / Safety", c.safety, w.safety === 0)}
+              ${sergioMode ? renderBar("😎 Proximity to Sergio", Math.max(0, 10 - c.kmFromBcn / 170), false) : ""}
+              ${renderBar("📍 Central & Day Trips", c.hub, sergioMode || w.hub === 0)}
+              ${renderBar("🍽️ Great Food", c.food, sergioMode || w.food === 0)}
+              ${renderBar("☀️ Good Weather", c.weather, sergioMode || w.weather === 0)}
+              ${renderBar("🤝 Good People / Vibe", c.vibe, sergioMode || w.vibe === 0)}
+              ${renderBar("💰 Cheap Living", c.cost, sergioMode || w.cost === 0)}
+              ${renderBar("🛡️ Low Crime / Safety", c.safety, sergioMode || w.safety === 0)}
             </div>
           </div>
           <div class="card-footer">

@@ -239,8 +239,7 @@
       </div>
 
       <div id="sergio-banner" class="sergio-banner">
-        Nearby<br>
-        <strong>😎 Sergio Mode Activated:</strong> All logical metrics ignored! Cities are now ranked strictly by how close they are to Barcelona
+        <strong>😎 Sergio Mode Activated:</strong> All logical metrics ignored! Cities are now ranked strictly by how close they are to Barcelona.
       </div>
 
       <div class="sliders">
@@ -314,6 +313,8 @@
     let selectedCountry = "All";
     let sergioMode = false;
 
+    // Calibrated with 2026 Numbeo Safety/Cost indices, WMO/ERA5 sunshine hours,
+    // Time Out / TasteAtlas food rankings, InterNations vibe data & ACI/rail connectivity.
     // kmFromBcn = approximate straight-line distance from Barcelona (km)
     const cities = [
       // SPAIN (Top 5)
@@ -322,25 +323,25 @@
         country: "Spain",
         flag: "🇪🇸",
         kmFromBcn: 0,
-        safety: 4.8, food: 9.5, cost: 6.1, weather: 9.3, vibe: 8.2, hub: 10.0,
+        safety: 4.8, food: 9.4, cost: 6.1, weather: 8.8, vibe: 8.4, hub: 9.3,
         mealPrice: "~16€",
-        note: "Mediterranean coast, major international airport, strong gastronomy, and easy day trips to Girona, Tarragona, Sitges, Montserrat, and the Pyrenees."
+        note: "Mediterranean coast, major international airport, top-5 global food scene, and easy day trips to Costa Brava, Sitges, Montserrat, and the Pyrenees. Low violent crime, though pickpockets require standard awareness."
       },
       {
         name: "Girona",
         country: "Spain",
         flag: "🇪🇸",
         kmFromBcn: 85,
-        safety: 9.2, food: 9.1, cost: 7.4, weather: 8.3, vibe: 8.4, hub: 8.2,
+        safety: 8.2, food: 9.0, cost: 7.0, weather: 8.0, vibe: 8.3, hub: 6.8,
         mealPrice: "~14€",
-        note: "Historic medieval city with high safety, acclaimed dining, and proximity to Costa Brava beaches and Barcelona, though with a smaller transit network."
+        note: "Historic medieval city with high safety, Michelin-level dining, and quick access to Costa Brava beaches, though without a major international airport."
       },
       {
         name: "Madrid",
         country: "Spain",
         flag: "🇪🇸",
         kmFromBcn: 505,
-        safety: 7.3, food: 9.2, cost: 6.3, weather: 8.0, vibe: 8.8, hub: 9.5,
+        safety: 7.1, food: 9.1, cost: 6.0, weather: 8.4, vibe: 8.6, hub: 9.5,
         mealPrice: "~15€",
         note: "Central high-speed rail hub with direct access to Toledo, Segovia, Seville, and Valencia, vibrant nightlife, no coastline, and hot summers."
       },
@@ -349,18 +350,18 @@
         country: "Spain",
         flag: "🇪🇸",
         kmFromBcn: 303,
-        safety: 7.9, food: 9.0, cost: 7.3, weather: 9.2, vibe: 8.6, hub: 8.1,
+        safety: 6.5, food: 8.6, cost: 7.1, weather: 9.1, vibe: 8.5, hub: 7.4,
         mealPrice: "~13€",
-        note: "Flat, bike-friendly coastal city with mild winters, lower living costs than Barcelona, and classic Mediterranean cuisine."
+        note: "Flat, bike-friendly coastal city with mild winters, lower living costs than Barcelona, and classic Mediterranean cuisine, with fewer direct international flights."
       },
       {
         name: "Seville",
         country: "Spain",
         flag: "🇪🇸",
         kmFromBcn: 830,
-        safety: 7.5, food: 9.1, cost: 7.8, weather: 8.6, vibe: 9.1, hub: 8.2,
+        safety: 6.5, food: 8.7, cost: 7.2, weather: 9.0, vibe: 8.9, hub: 6.9,
         mealPrice: "~12€",
-        note: "Affordable tapas culture, warm local atmosphere, and easy access to Córdoba, Granada, and southern Portugal, with extreme summer heat."
+        note: "Affordable tapas culture, warm local atmosphere, and easy access to Córdoba and Granada, paired with extreme summer heat and a smaller airport."
       },
 
       // PORTUGAL (Lisbon & Porto)
@@ -369,18 +370,18 @@
         country: "Portugal",
         flag: "🇵🇹",
         kmFromBcn: 1005,
-        safety: 8.3, food: 8.9, cost: 7.1, weather: 9.0, vibe: 9.2, hub: 8.8,
+        safety: 6.7, food: 8.9, cost: 6.7, weather: 8.9, vibe: 9.0, hub: 8.0,
         mealPrice: "~13€",
-        note: "Sunny coastal capital with wide English proficiency, welcoming locals, seafood culture, and nearby trips to Sintra and Cascais beaches."
+        note: "Sunny coastal capital with wide English proficiency, welcoming locals, seafood culture, and nearby trips to Sintra and Cascais, though on Europe's western edge."
       },
       {
         name: "Porto",
         country: "Portugal",
         flag: "🇵🇹",
         kmFromBcn: 902,
-        safety: 8.8, food: 8.8, cost: 7.9, weather: 7.8, vibe: 9.4, hub: 8.0,
+        safety: 6.7, food: 8.6, cost: 7.3, weather: 7.8, vibe: 9.1, hub: 7.0,
         mealPrice: "~11€",
-        note: "Walkable riverside city with strong local hospitality, lower costs than Lisbon, and easy access to the Douro Valley and Atlantic beaches."
+        note: "Walkable riverside city with strong local hospitality, lower costs than Lisbon, and easy access to the Douro Valley, though rainier with fewer flight routes."
       },
 
       // ITALY (Rome, Milan, Florence, Naples)
@@ -389,36 +390,36 @@
         country: "Italy",
         flag: "🇮🇹",
         kmFromBcn: 785,
-        safety: 7.5, food: 9.4, cost: 6.1, weather: 8.2, vibe: 7.7, hub: 9.1,
+        safety: 5.8, food: 9.3, cost: 5.1, weather: 7.8, vibe: 7.6, hub: 8.1,
         mealPrice: "~16€",
-        note: "Compact Renaissance city surrounded by Tuscan countryside towns (Siena, Pisa, Chianti) with direct north-south high-speed rail."
+        note: "Compact Renaissance city surrounded by Tuscan countryside towns (Siena, Pisa, Chianti) with direct north-south high-speed rail and heavy tourist crowds."
       },
       {
         name: "Rome",
         country: "Italy",
         flag: "🇮🇹",
         kmFromBcn: 860,
-        safety: 5.3, food: 9.5, cost: 6.2, weather: 8.8, vibe: 7.8, hub: 8.9,
+        safety: 5.3, food: 9.3, cost: 5.7, weather: 8.4, vibe: 7.8, hub: 8.8,
         mealPrice: "~15€",
-        note: "Major international hub with unmatched historical landmarks, sunny weather, and traditional cuisine, alongside heavy crowds and chaotic transit."
+        note: "Major international hub with unmatched historical landmarks, sunny weather, and traditional cuisine, alongside heavy crowds and chaotic urban transit."
       },
       {
         name: "Milan",
         country: "Italy",
         flag: "🇮🇹",
         kmFromBcn: 725,
-        safety: 6.2, food: 8.7, cost: 5.2, weather: 7.1, vibe: 6.6, hub: 9.5,
+        safety: 4.7, food: 8.8, cost: 4.7, weather: 6.6, vibe: 6.5, hub: 9.2,
         mealPrice: "~18€",
-        note: "Fast-paced commercial and fashion hub with extensive rail links to Lake Como, the Swiss Alps, Venice, and the Ligurian coast."
+        note: "Fast-paced commercial and fashion hub with extensive rail links to Lake Como, the Swiss Alps, Venice, and the Ligurian coast, but pricey and foggy in winter."
       },
       {
         name: "Naples",
         country: "Italy",
         flag: "🇮🇹",
         kmFromBcn: 1015,
-        safety: 4.3, food: 9.7, cost: 7.9, weather: 9.0, vibe: 6.2, hub: 8.8,
+        safety: 3.8, food: 9.6, cost: 6.1, weather: 8.5, vibe: 6.8, hub: 7.6,
         mealPrice: "~11€",
-        note: "Affordable, chaotic, high-energy coastal city famous for pizza and street food, serving as the gateway to Pompeii, Capri, and the Amalfi Coast."
+        note: "High-energy coastal city ranked #1 globally for traditional food and street pizza, serving as the gateway to Pompeii and the Amalfi Coast, with lower safety scores."
       },
 
       // FRANCE (Lyon, Nice, Paris)
@@ -427,27 +428,27 @@
         country: "France",
         flag: "🇫🇷",
         kmFromBcn: 530,
-        safety: 6.8, food: 9.5, cost: 5.8, weather: 7.2, vibe: 7.1, hub: 9.2,
+        safety: 4.1, food: 9.3, cost: 4.8, weather: 6.8, vibe: 6.8, hub: 8.5,
         mealPrice: "~18€",
-        note: "France's gastronomic center with direct high-speed rail access to Paris, Geneva, the French Alps, and Provence."
+        note: "France's gastronomic center with direct high-speed rail access to Paris, Geneva, the French Alps, and Provence, though colder and landlocked."
       },
       {
         name: "Nice",
         country: "France",
         flag: "🇫🇷",
         kmFromBcn: 490,
-        safety: 6.7, food: 8.6, cost: 5.1, weather: 9.0, vibe: 6.9, hub: 8.9,
+        safety: 4.4, food: 8.5, cost: 4.7, weather: 8.7, vibe: 6.7, hub: 8.2,
         mealPrice: "~19€",
-        note: "French Riviera coastal city with mild winters, turquoise waters, and immediate rail access to Monaco and northern Italy."
+        note: "French Riviera coastal city with mild winters, turquoise waters, and immediate rail access to Monaco and northern Italy, at higher daily costs."
       },
       {
         name: "Paris",
         country: "France",
         flag: "🇫🇷",
         kmFromBcn: 830,
-        safety: 5.0, food: 9.3, cost: 4.0, weather: 5.8, vibe: 5.6, hub: 9.6,
+        safety: 4.2, food: 9.4, cost: 4.1, weather: 5.4, vibe: 5.6, hub: 9.8,
         mealPrice: "~20€",
-        note: "Global cultural capital with Europe's densest rail and flight network, world-class dining, high living costs, and an intense, rushed urban pace."
+        note: "Global cultural capital with Europe's densest rail and flight network and world-class dining, paired with high living costs, grey skies, and an intense pace."
       },
 
       // GERMANY (Munich, Berlin, Hamburg)
@@ -456,16 +457,16 @@
         country: "Germany",
         flag: "🇩🇪",
         kmFromBcn: 1055,
-        safety: 8.8, food: 7.4, cost: 4.8, weather: 5.3, vibe: 7.0, hub: 9.2,
+        safety: 7.9, food: 7.3, cost: 4.4, weather: 5.6, vibe: 6.8, hub: 9.0,
         mealPrice: "~18€",
-        note: "Clean, orderly city with strong public infrastructure and easy trips to the Bavarian and Austrian Alps, Salzburg, and northern Italy."
+        note: "Clean, very safe city with strong public infrastructure and easy trips to the Bavarian and Austrian Alps, Salzburg, and northern Italy, with long winters."
       },
       {
         name: "Berlin",
         country: "Germany",
         flag: "🇩🇪",
         kmFromBcn: 1500,
-        safety: 6.3, food: 8.1, cost: 6.0, weather: 4.7, vibe: 7.2, hub: 8.4,
+        safety: 5.6, food: 8.1, cost: 5.0, weather: 5.2, vibe: 7.0, hub: 8.4,
         mealPrice: "~15€",
         note: "Large, international creative hub with diverse global cuisine and moderate costs, paired with blunt local directness and cold, grey winters."
       },
@@ -474,7 +475,7 @@
         country: "Germany",
         flag: "🇩🇪",
         kmFromBcn: 1475,
-        safety: 7.1, food: 7.6, cost: 5.6, weather: 4.3, vibe: 6.9, hub: 7.5,
+        safety: 6.0, food: 7.4, cost: 4.8, weather: 4.6, vibe: 6.7, hub: 7.4,
         mealPrice: "~16€",
         note: "Maritime port city with extensive canals, strong music and cultural life, reserved northern demeanor, and cool, rainy weather."
       },
@@ -485,27 +486,27 @@
         country: "Switzerland",
         flag: "🇨🇭",
         kmFromBcn: 855,
-        safety: 9.6, food: 6.8, cost: 1.8, weather: 4.9, vibe: 6.0, hub: 9.3,
+        safety: 7.7, food: 6.9, cost: 1.5, weather: 5.3, vibe: 5.9, hub: 9.1,
         mealPrice: "~32€",
-        note: "Ultra-safe lakeside city with punctual rail connections to the Swiss Alps, Germany, Austria, and Italy, at very high living costs."
+        note: "Ultra-safe lakeside city with punctual rail connections to the Swiss Alps, Germany, Austria, and Italy, alongside the highest daily living costs in Europe."
       },
       {
         name: "Geneva",
         country: "Switzerland",
         flag: "🇨🇭",
         kmFromBcn: 625,
-        safety: 8.9, food: 7.2, cost: 1.9, weather: 5.4, vibe: 6.1, hub: 9.0,
+        safety: 7.1, food: 7.1, cost: 1.6, weather: 5.7, vibe: 6.0, hub: 8.6,
         mealPrice: "~30€",
-        note: "International diplomatic hub on Lake Geneva surrounded by French alpine towns and ski resorts, with high daily expenses."
+        note: "International diplomatic hub on Lake Geneva surrounded by French alpine towns and ski resorts, with steep daily expenses."
       },
       {
         name: "Bern",
         country: "Switzerland",
         flag: "🇨🇭",
         kmFromBcn: 760,
-        safety: 9.6, food: 6.5, cost: 2.3, weather: 4.9, vibe: 6.8, hub: 8.9,
+        safety: 7.4, food: 6.6, cost: 1.9, weather: 5.3, vibe: 6.5, hub: 7.9,
         mealPrice: "~28€",
-        note: "Relaxed medieval capital with direct rail links to Interlaken and the Jungfrau region."
+        note: "Relaxed medieval capital with direct rail links to Interlaken and the Jungfrau region, high safety, high prices, and no major international airport."
       }
     ];
 

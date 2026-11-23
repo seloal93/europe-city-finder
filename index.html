@@ -216,24 +216,19 @@
       font-size: 0.8rem;
       color: var(--muted);
     }
-    .match-score {
-      font-size: 1.02rem;
-      font-weight: 800;
-      color: var(--text);
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <h1>🌍 Europe City Finder (Top 20 Major Cities)</h1>
-      <p>Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential"). <strong>Central & Day Trips</strong> measures access to beaches, mountains, nearby towns, and international connections.</p>
+      <p>Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential"). <strong>Central & Day Trips</strong> measures access to beaches, mountains, nearby towns, and international connections. Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential").</p>
     </header>
 
     <!-- PRIORITY SLIDERS -->
     <section class="panel">
       <div class="panel-header">
-        <h2>1. Your Priorities</h2>
+        <h2>Your Priorities</h2>
         <div class="presets">
           <button onclick="applyPreset('balanced')">⚖️ Recommended Mix</button>
           <button onclick="applyPreset('explorer')">🧭 Basecamp & Food (Ignore Crime)</button>
@@ -644,7 +639,6 @@
           </div>
           <div class="card-footer">
             <span>Casual meal: <strong>${c.mealPrice}</strong></span>
-            <span class="match-score">${c.match}% Match</span>
           </div>
         </article>
       `).join("");

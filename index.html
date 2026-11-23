@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Honest Europe City Finder — Top 35 Cities</title>
+  <title>Europe City Finder — Top 35 Cities</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -149,7 +149,7 @@
 
     .city-title { font-size: 1.2rem; font-weight: 700; padding-right: 95px; }
     .city-country { color: var(--muted); font-size: 0.83rem; margin-bottom: 9px; }
-    .honest-note {
+    .city-note {
       font-size: 0.84rem;
       background: rgba(15, 23, 42, 0.6);
       padding: 9px 11px;
@@ -194,8 +194,8 @@
 <body>
   <div class="container">
     <header>
-      <h1>🌍 Honest Europe City Finder (Top 35 Major Cities)</h1>
-      <p>Slide each priority from <strong>0</strong> ("Don't care at all") to <strong>10</strong> ("Must have"). <strong>Central & Day Trips</strong> scores real transit access to beaches, mountains, historic towns & major airports.</p>
+      <h1>🌍 Europe City Finder (Top 35 Major Cities)</h1>
+      <p>Adjust each priority from <strong>0</strong> ("Not important") to <strong>10</strong> ("Essential"). <strong>Central & Day Trips</strong> measures access to beaches, mountains, nearby towns, and international connections.</p>
     </header>
 
     <!-- PRIORITY SLIDERS -->
@@ -280,8 +280,6 @@
   <script>
     let selectedCountry = "All";
 
-    // Consistent 1-10 scoring across all 35 cities
-    // hub = variety of easy day trips (coast + mountains + historic cities + major international airport)
     const cities = [
       // SPAIN (Top 5)
       {
@@ -290,7 +288,7 @@
         flag: "🇪🇸",
         safety: 4.5, food: 9.5, cost: 6.1, weather: 9.3, vibe: 8.3, hub: 10.0,
         mealPrice: "~16€",
-        note: "My home base: #1 location for day trips (city beach, Girona, Tarragona, Sitges, Montserrat, Pyrenees & Vall d'Aran nearby + huge airport) and top food — just stay alert for pickpockets."
+        note: "Mediterranean coast, major international airport, strong gastronomy, and easy day trips to Girona, Tarragona, Sitges, Montserrat, and the Pyrenees — high pickpocket rates in tourist areas."
       },
       {
         name: "Girona",
@@ -298,7 +296,7 @@
         flag: "🇪🇸",
         safety: 9.2, food: 9.1, cost: 7.4, weather: 8.3, vibe: 8.8, hub: 8.2,
         mealPrice: "~14€",
-        note: "My honest chill alternative: super safe, medieval charm, great food, close to Costa Brava and Barcelona — smaller transit hub than Barcelona."
+        note: "Historic medieval city with high safety, acclaimed dining, and proximity to Costa Brava beaches and Barcelona, though with a smaller transit network."
       },
       {
         name: "Madrid",
@@ -306,7 +304,7 @@
         flag: "🇪🇸",
         safety: 7.2, food: 9.2, cost: 6.3, weather: 8.0, vibe: 8.7, hub: 9.5,
         mealPrice: "~15€",
-        note: "Direct high-speed trains to half of Spain (Toledo, Segovia, Seville, Valencia), super social nightlife, no beach, hot summers."
+        note: "Central high-speed rail hub with direct access to Toledo, Segovia, Seville, and Valencia, vibrant nightlife, no coastline, and hot summers."
       },
       {
         name: "Valencia",
@@ -314,7 +312,7 @@
         flag: "🇪🇸",
         safety: 7.9, food: 9.0, cost: 7.3, weather: 9.2, vibe: 8.6, hub: 8.1,
         mealPrice: "~13€",
-        note: "Flat, bike-friendly, city beach, birth of paella, calmer and cheaper than Barcelona, fewer rail connections."
+        note: "Flat, bike-friendly coastal city with mild winters, lower living costs than Barcelona, and classic Mediterranean cuisine."
       },
       {
         name: "Seville",
@@ -322,7 +320,7 @@
         flag: "🇪🇸",
         safety: 7.5, food: 9.1, cost: 7.8, weather: 8.6, vibe: 9.1, hub: 8.2,
         mealPrice: "~12€",
-        note: "Pure southern charm, cheap tapas, very warm locals, easy trips to Córdoba, Granada & Portugal's Algarve (extreme summer heat)."
+        note: "Affordable tapas culture, warm local atmosphere, and easy access to Córdoba, Granada, and southern Portugal, with extreme summer heat."
       },
 
       // PORTUGAL (Top 5)
@@ -332,7 +330,7 @@
         flag: "🇵🇹",
         safety: 8.4, food: 8.9, cost: 7.1, weather: 9.0, vibe: 9.3, hub: 8.8,
         mealPrice: "~13€",
-        note: "Top pick for KL expats: warm people, great English, Sintra & Cascais beaches nearby, sunny hills, relaxed rhythm."
+        note: "Sunny coastal capital with wide English proficiency, welcoming locals, seafood culture, and nearby trips to Sintra and Cascais beaches."
       },
       {
         name: "Porto",
@@ -340,7 +338,7 @@
         flag: "🇵🇹",
         safety: 8.8, food: 8.8, cost: 7.9, weather: 7.8, vibe: 9.4, hub: 8.0,
         mealPrice: "~11€",
-        note: "Super welcoming locals, Douro Valley wine trips, ocean tram rides, cheaper than Lisbon."
+        note: "Walkable riverside city with strong local hospitality, lower costs than Lisbon, and easy access to the Douro Valley and Atlantic beaches."
       },
       {
         name: "Faro (Algarve)",
@@ -348,7 +346,7 @@
         flag: "🇵🇹",
         safety: 9.0, food: 8.3, cost: 7.6, weather: 9.4, vibe: 8.9, hub: 7.4,
         mealPrice: "~12€",
-        note: "300+ sunny days, dramatic cliffs & beaches, close to Seville, very chill pace."
+        note: "Over 300 sunny days per year, dramatic Atlantic cliffs and beaches, relaxed pace, and straightforward road access to Seville."
       },
       {
         name: "Coimbra",
@@ -356,7 +354,7 @@
         flag: "🇵🇹",
         safety: 9.1, food: 8.4, cost: 8.4, weather: 8.2, vibe: 9.0, hub: 7.9,
         mealPrice: "~10€",
-        note: "Historic university town right between Lisbon and Porto — super affordable and authentic."
+        note: "Historic university city positioned midway between Lisbon and Porto, offering low daily costs and a traditional lifestyle."
       },
       {
         name: "Braga",
@@ -364,7 +362,7 @@
         flag: "🇵🇹",
         safety: 9.3, food: 8.5, cost: 8.3, weather: 7.7, vibe: 9.1, hub: 7.8,
         mealPrice: "~10€",
-        note: "Very safe, youthful, close to Porto, northern Spain (Galicia) and national parks."
+        note: "Safe, youthful northern city near Porto, Peneda-Gerês National Park, and the Spanish region of Galicia."
       },
 
       // ITALY (Top 5)
@@ -374,7 +372,7 @@
         flag: "🇮🇹",
         safety: 7.6, food: 9.7, cost: 6.8, weather: 7.7, vibe: 8.5, hub: 9.5,
         mealPrice: "~15€",
-        note: "Italy's food capital AND main rail crossroads: Florence, Milan, Venice & Rome are all easy day trips."
+        note: "Renowned culinary capital and major rail crossroads with fast connections to Florence, Milan, Venice, and Rome."
       },
       {
         name: "Florence",
@@ -382,7 +380,7 @@
         flag: "🇮🇹",
         safety: 7.4, food: 9.4, cost: 6.1, weather: 8.2, vibe: 8.0, hub: 9.1,
         mealPrice: "~16€",
-        note: "Renaissance beauty with easy day trips across Tuscany (Siena, Pisa, Chianti) and fast trains north/south."
+        note: "Compact Renaissance city surrounded by Tuscan countryside towns (Siena, Pisa, Chianti) with direct north-south high-speed rail."
       },
       {
         name: "Rome",
@@ -390,7 +388,7 @@
         flag: "🇮🇹",
         safety: 5.2, food: 9.5, cost: 6.2, weather: 8.8, vibe: 8.2, hub: 8.9,
         mealPrice: "~15€",
-        note: "Unmatched history, pasta, and sun — chaotic transit and station pickpockets, huge flight/train hub."
+        note: "Major international hub with unmatched historical landmarks, sunny weather, and traditional cuisine, alongside heavy crowds and transit pickpockets."
       },
       {
         name: "Milan",
@@ -398,7 +396,7 @@
         flag: "🇮🇹",
         safety: 6.1, food: 8.7, cost: 5.0, weather: 7.1, vibe: 7.0, hub: 9.5,
         mealPrice: "~18€",
-        note: "Less 'romantic Italy', more business — Lake Como, Swiss Alps, Venice & Genoa are all nearby."
+        note: "Commercial and fashion hub with extensive rail links to Lake Como, the Swiss Alps, Venice, and the Ligurian coast."
       },
       {
         name: "Naples",
@@ -406,7 +404,7 @@
         flag: "🇮🇹",
         safety: 4.3, food: 9.7, cost: 7.9, weather: 9.0, vibe: 8.9, hub: 8.8,
         mealPrice: "~11€",
-        note: "Birthplace of pizza, chaotic & rough around the edges, gateway to Amalfi Coast, Capri, Sorrento & Pompeii."
+        note: "Affordable, high-energy coastal city famous for pizza and street food, serving as the gateway to Pompeii, Capri, and the Amalfi Coast."
       },
 
       // FRANCE (Top 5)
@@ -416,7 +414,7 @@
         flag: "🇫🇷",
         safety: 6.8, food: 9.5, cost: 5.8, weather: 7.2, vibe: 7.4, hub: 9.2,
         mealPrice: "~18€",
-        note: "Gastronomic capital of France, easy high-speed access to Paris, Geneva, French Alps, and Provence."
+        note: "France's gastronomic center with direct high-speed rail access to Paris, Geneva, the French Alps, and Provence."
       },
       {
         name: "Nice",
@@ -424,7 +422,7 @@
         flag: "🇫🇷",
         safety: 6.7, food: 8.6, cost: 5.2, weather: 9.0, vibe: 7.3, hub: 8.9,
         mealPrice: "~19€",
-        note: "French Riviera sun, turquoise sea, Monaco and Italy right next door."
+        note: "French Riviera coastal city with mild winters, turquoise waters, and immediate rail access to Monaco and northern Italy."
       },
       {
         name: "Paris",
@@ -432,7 +430,7 @@
         flag: "🇫🇷",
         safety: 5.0, food: 9.3, cost: 4.1, weather: 5.8, vibe: 6.0, hub: 9.6,
         mealPrice: "~20€",
-        note: "World-class culture, bakeries, and Europe's densest train/flight network — expensive, busy, and brusque."
+        note: "Global cultural capital with Europe's densest rail and flight network, world-class dining, high living costs, and busy urban pace."
       },
       {
         name: "Bordeaux",
@@ -440,7 +438,7 @@
         flag: "🇫🇷",
         safety: 6.6, food: 8.9, cost: 6.0, weather: 7.6, vibe: 7.5, hub: 8.0,
         mealPrice: "~17€",
-        note: "Elegant wine city, close to Atlantic surf beaches & Arcachon dunes, fast train to Paris."
+        note: "Elegant wine capital close to Atlantic beaches and Arcachon Bay, connected to Paris via high-speed rail."
       },
       {
         name: "Annecy",
@@ -448,7 +446,7 @@
         flag: "🇫🇷",
         safety: 9.0, food: 8.5, cost: 5.4, weather: 6.6, vibe: 8.0, hub: 8.3,
         mealPrice: "~19€",
-        note: "Fairytale alpine lake town near Geneva and surrounded by ski/hiking resorts."
+        note: "Alpine lake town offering high safety, outdoor sports, and proximity to Geneva and French mountain resorts."
       },
 
       // GERMANY (Top 5)
@@ -458,7 +456,7 @@
         flag: "🇩🇪",
         safety: 8.8, food: 7.4, cost: 4.6, weather: 5.3, vibe: 7.2, hub: 9.2,
         mealPrice: "~18€",
-        note: "Clean, safe beer-garden culture; easy trips to Austrian Alps, Salzburg & northern Italy."
+        note: "Clean, safe city with strong public infrastructure and easy trips to the Bavarian and Austrian Alps, Salzburg, and northern Italy."
       },
       {
         name: "Berlin",
@@ -466,7 +464,7 @@
         flag: "🇩🇪",
         safety: 6.3, food: 8.1, cost: 6.4, weather: 4.7, vibe: 7.3, hub: 8.4,
         mealPrice: "~14€",
-        note: "Super international, creative, great Asian/world food, cold grey winters and direct style."
+        note: "Large, international creative hub with diverse global cuisine and moderate prices for Western Europe, paired with cold, grey winters."
       },
       {
         name: "Frankfurt",
@@ -474,7 +472,7 @@
         flag: "🇩🇪",
         safety: 6.2, food: 7.2, cost: 5.3, weather: 5.4, vibe: 6.6, hub: 9.5,
         mealPrice: "~16€",
-        note: "Corporate skyline, not pretty, Europe's biggest transit hub (Rhine Valley, Heidelberg, France & Benelux close)."
+        note: "Major European aviation and rail hub with quick access to the Rhine Valley, Heidelberg, France, and the Benelux countries."
       },
       {
         name: "Hamburg",
@@ -482,7 +480,7 @@
         flag: "🇩🇪",
         safety: 7.1, food: 7.6, cost: 5.6, weather: 4.3, vibe: 7.1, hub: 7.5,
         mealPrice: "~16€",
-        note: "Cool maritime port with canals and music scene, rainy/windy weather."
+        note: "Maritime port city with extensive canals, strong music and cultural life, and cool, rainy northern weather."
       },
       {
         name: "Freiburg",
@@ -490,7 +488,7 @@
         flag: "🇩🇪",
         safety: 8.9, food: 7.5, cost: 6.0, weather: 6.5, vibe: 8.1, hub: 8.8,
         mealPrice: "~15€",
-        note: "Germany's sunniest city, gateway to the Black Forest, right on the border with France (Alsace) and Switzerland."
+        note: "Germany's sunniest university city at the edge of the Black Forest, right on the border with France (Alsace) and Switzerland."
       },
 
       // UNITED KINGDOM (Top 5)
@@ -500,7 +498,7 @@
         flag: "🇬🇧",
         safety: 6.0, food: 8.4, cost: 3.1, weather: 3.6, vibe: 6.8, hub: 9.5,
         mealPrice: "~22€",
-        note: "Incredible global food (including Malaysian!) and flights everywhere, brutal rent and grey drizzle."
+        note: "Global metropolis with extensive international flights, diverse world cuisine, high living costs, and overcast weather."
       },
       {
         name: "Edinburgh",
@@ -508,7 +506,7 @@
         flag: "🇬🇧",
         safety: 8.0, food: 7.5, cost: 5.1, weather: 3.4, vibe: 8.5, hub: 7.6,
         mealPrice: "~18€",
-        note: "Stunning castle city, very friendly locals, gateway to the Scottish Highlands — cold and windy."
+        note: "Historic stone architecture, welcoming local culture, and gateway to the Scottish Highlands, with cool and windy weather year-round."
       },
       {
         name: "Manchester",
@@ -516,7 +514,7 @@
         flag: "🇬🇧",
         safety: 5.8, food: 7.6, cost: 5.6, weather: 3.5, vibe: 8.2, hub: 8.1,
         mealPrice: "~16€",
-        note: "Warm northern humor, football & music culture, close to Peak District & Lake District, very rainy."
+        note: "Lively northern city known for music, sports, friendly locals, and proximity to the Peak District and Lake District."
       },
       {
         name: "Bristol",
@@ -524,7 +522,7 @@
         flag: "🇬🇧",
         safety: 6.9, food: 7.7, cost: 5.0, weather: 4.3, vibe: 8.3, hub: 8.2,
         mealPrice: "~17€",
-        note: "Creative harbor city near Bath, Wales, and Cotswolds; friendlier and calmer than London."
+        note: "Harbor city with an independent food and arts scene, close to Bath, Wales, and the Cotswolds."
       },
       {
         name: "Bath",
@@ -532,7 +530,7 @@
         flag: "🇬🇧",
         safety: 8.5, food: 7.4, cost: 4.8, weather: 4.4, vibe: 8.2, hub: 7.9,
         mealPrice: "~18€",
-        note: "Gorgeous Georgian stone architecture and Roman baths, super safe, close to Stonehenge & Bristol."
+        note: "Well-preserved Georgian architecture and Roman baths, high safety, and easy rail access to Bristol and London."
       },
 
       // SWITZERLAND (Top 5)
@@ -542,7 +540,7 @@
         flag: "🇨🇭",
         safety: 9.6, food: 6.8, cost: 1.8, weather: 4.9, vibe: 6.3, hub: 9.3,
         mealPrice: "~32€",
-        note: "Spotless, ultra-safe, easy trains to Alps, Italy, Germany & France — jaw-dropping prices."
+        note: "Ultra-safe lakeside city with punctual rail connections to the Swiss Alps, Germany, Austria, and Italy, at very high living costs."
       },
       {
         name: "Geneva",
@@ -550,7 +548,7 @@
         flag: "🇨🇭",
         safety: 8.9, food: 7.2, cost: 1.9, weather: 5.4, vibe: 6.4, hub: 9.0,
         mealPrice: "~30€",
-        note: "International UN vibe on Lake Geneva, surrounded by France and Mont Blanc, very expensive."
+        note: "International diplomatic hub on Lake Geneva surrounded by French alpine towns and ski resorts, with high daily expenses."
       },
       {
         name: "Lucerne",
@@ -558,7 +556,7 @@
         flag: "🇨🇭",
         safety: 9.7, food: 6.6, cost: 2.1, weather: 4.8, vibe: 7.2, hub: 8.8,
         mealPrice: "~29€",
-        note: "Postcard lake + mountains (Pilatus, Rigi) right in the geographic heart of Switzerland."
+        note: "Scenic lakefront city in central Switzerland surrounded by Mount Pilatus and Rigi, offering high safety and steep prices."
       },
       {
         name: "Bern",
@@ -566,7 +564,7 @@
         flag: "🇨🇭",
         safety: 9.6, food: 6.5, cost: 2.3, weather: 4.9, vibe: 7.3, hub: 8.9,
         mealPrice: "~28€",
-        note: "Chill medieval capital, river floating in summer, close to Interlaken & Jungfrau Alps."
+        note: "Relaxed medieval capital with direct rail links to Interlaken and the Jungfrau region."
       },
       {
         name: "Lugano",
@@ -574,7 +572,7 @@
         flag: "🇨🇭",
         safety: 9.5, food: 8.1, cost: 2.4, weather: 7.4, vibe: 7.7, hub: 8.8,
         mealPrice: "~27€",
-        note: "Italian-speaking Switzerland: palm trees, pasta, Swiss safety, and close to Milan."
+        note: "Italian-speaking lakeside city combining Mediterranean climate and cuisine with Swiss safety and direct rail to Milan."
       }
     ];
 
@@ -666,7 +664,7 @@
             <span class="rank-badge">#${idx + 1} · ${c.match}%</span>
             <div class="city-title">${c.flag} ${c.name}</div>
             <div class="city-country">${c.country}</div>
-            <div class="honest-note">${c.note}</div>
+            <div class="city-note">${c.note}</div>
 
             <div class="metrics">
               ${renderBar("📍 Central & Day Trips", c.hub, w.hub === 0)}
